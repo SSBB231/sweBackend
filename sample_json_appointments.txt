@@ -8,9 +8,9 @@
 }
 
 {
-	"user":"eric",
+	"user":"cdione",
 	"place":"Hawaii",
-	"parties":"{monica, ssbb300, peter}",
+	"parties":"{monica, jimmy}",
 	"startDate":"2017-10-17",
 	"endDate":"2017-10-17",
 	"description":"birthday"

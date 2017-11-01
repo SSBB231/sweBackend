@@ -285,6 +285,7 @@ class User
         let aString = appointment.getDate().toString();
         console.log(aString);
         this.appointments.set(aString, appointment);
+        uploadUserAppointments(this, appointment);
     }
 
     getAppointments()
@@ -331,6 +332,7 @@ class Appointment
 {
     constructor(user, place, parties, startDate, endDate, description)
     {
+        this.user = user;
         this.place = place;
 
         this.startDate = startDate;
@@ -348,12 +350,7 @@ class Appointment
 
     makeSerializable()
     {
-
-    }
-
-    restoreToUnserializable()
-    {
-
+        return new Appointment(this.user, this.place, this.parties, this.startDate.toJSON(), this.endDate.toJSON(), this.description);
     }
 
     getStartDate()
@@ -901,15 +898,15 @@ function addFriendListToDatabase(data)
     console.log("Added all friends==================");
 }
 
-function uploadUserAppointments(user, appointment)
+function uploadUserAppointments(data, appointment)
 {
-    let node = database.ref().child('appointments').child(user.getUserName());
+    let node = database.ref().child('appointments').child(data.getUserName());
     node.remove();
 
-    for(let friend of appointment.getParties())
+    for(let appointment of data.getAllAppointments())
     {
-        console.log("RETRIEVED THIS INFO: " + friend);
-        database.ref().child('appointments').child(user.getUserName()).push(friend);
+        console.log("RETRIEVED THIS INFO: " + appointment);
+        database.ref().child('appointments').child(data.getUserName()).push(appointment.makeSerializable());
     }
 
     console.log("Added all friends==================");
